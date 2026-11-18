@@ -158,6 +158,12 @@ func TestEnvioVendor_GenerateConfigs(t *testing.T) {
 		assert.ErrorContains(t, err, "requires upstream.evm.chainId")
 	})
 
+	t.Run("missing evm block", func(t *testing.T) {
+		ups := &common.UpstreamConfig{}
+		_, err := CreateEnvioVendor().GenerateConfigs(ctx, &logger, ups, common.VendorSettings{})
+		assert.ErrorContains(t, err, "requires upstream.evm.chainId")
+	})
+
 	t.Run("malformed api key", func(t *testing.T) {
 		ups := &common.UpstreamConfig{Evm: &common.EvmUpstreamConfig{ChainId: 1}}
 		_, err := CreateEnvioVendor().GenerateConfigs(ctx, &logger, ups, common.VendorSettings{"apiKey": "%zz"})
